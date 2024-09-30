@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# Mac OS
+.DS_Store
+
+# Generated files
+outputs/*
+!outputs/example/
+
+# Inputs
+inputs/*
+!inputs/example.txt
+!inputs/example.jpg
+
+# Error log
+error.log
+
+# Examples
+local-voice-examples

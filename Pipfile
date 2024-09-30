@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+python-dotenv = "*"
+tts = "*"
+openai = "*"
+requests = "*"
+tiktoken = "*"
+argparse = "*"
+mutagen = "*"
+pydub = "*"
+av = "*"
+ebooklib = "*"
+pypdf2 = "*"
+beautifulsoup4 = "*"
+mobi-reader = "*"
+html2text = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
+python_full_version = "3.9.20"
