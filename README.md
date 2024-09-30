@@ -157,7 +157,7 @@ This command will execute Step 1 and Step 2 only.
 
 ## Example input / output structure
 
-`css
+```
 book-to-audio-converter/
 ├── inputs/
 │   └── my_book.epub
@@ -173,7 +173,7 @@ book-to-audio-converter/
 │       │   ├── 2.mp3
 │       │   └── ...
 │       └── my_book.m4b
-`
+```
 
 ## More local voice options
 
