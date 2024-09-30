@@ -53,10 +53,13 @@ def convert_text_to_speech(text, voice="male_1", method="local", output_file=Non
                 with open(output_file, "wb") as f:
                     f.write(response.content)
             else:
-                raise ValueError("Output file path must be provided for remote method.")
+                error_message = "Output file path must be provided for remote method."
+                write_to_error_log(error_message)
+                raise ValueError(error_message)
         except Exception as e:
-            write_to_error_log(f"Failed to convert text to speech via OpenAI API: {e}")
-            raise Exception(f"Failed to convert text to speech via OpenAI API: {e}")
+            error_message = f"Failed to convert text to speech via OpenAI API: {e}"
+            write_to_error_log(error_message)
+            raise Exception(error_message)
 
     elif method == "local":
         # Get the VITS voice mapping from config
@@ -77,10 +80,13 @@ def convert_text_to_speech(text, voice="male_1", method="local", output_file=Non
                     file_path=output_file
                 )
             else:
-                raise ValueError("Output file path must be provided for local method.")
+                error_message = "Output file path must be provided for local method."
+                write_to_error_log(error_message)
+                raise ValueError(error_message)
         except Exception as e:
-            write_to_error_log(f"Failed to convert text to speech locally: {e}")
-            raise Exception(f"Failed to convert text to speech locally: {e}")
+            error_message = f"Failed to convert text to speech locally: {e}"
+            write_to_error_log(error_message)
+            raise Exception(error_message)
     else:
         raise ValueError(f"Invalid TTS method '{method}'. Choose 'remote' or 'local'.")
 
@@ -101,7 +107,8 @@ def generate_mp3_files(tts_chunks: list, method: str, audio_files_dir: str):
             convert_text_to_speech(text, voice, method, output_file=file_path)
             print(f"Generated MP3 file: {file_name}")
         except Exception as e:
-            write_to_error_log(f"Failed to generate MP3 for chunk {i}: {e}")
-            print(f"Failed to generate MP3 for chunk {i}: {e}")
+            error_message = f"Failed to generate MP3 for chunk {i}: {e}"
+            write_to_error_log(error_message)
+            print(error_message)
 
     print(f"All MP3 files have been generated in the '{audio_files_dir}' directory.")

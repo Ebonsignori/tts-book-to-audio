@@ -81,11 +81,11 @@ def combine_mp3s_with_ffmpeg(mp3_directory, output_filename, metadata, cover_ima
         print(f"Combined audiobook saved to: {output_filename}")
 
     except subprocess.CalledProcessError as e:
-        error_message = f"FFmpeg error: {e.stderr}"
+        error_message = f"FFmpeg error: {e.stderr}\n\If you're seeing this error try running step 4 with the -m av flag."
         write_to_error_log(error_message)
         print(error_message)
     except Exception as e:
-        error_message = f"Error processing MP3s with ffmpeg: {e}"
+        error_message = f"Error processing MP3s with ffmpeg: {e}\nIf you're seeing this error try running step 4 with the -m av flag."
         write_to_error_log(error_message)
         print(error_message)
     finally:
@@ -96,8 +96,9 @@ def combine_mp3s_with_ffmpeg(mp3_directory, output_filename, metadata, cover_ima
             if 'concatenated_mp3' in locals() and os.path.exists(concatenated_mp3):
                 os.remove(concatenated_mp3)
         except Exception as cleanup_error:
-            write_to_error_log(f"Error during cleanup: {cleanup_error}")
-            print(f"Error during cleanup: {cleanup_error}")
+            error_message = f"Error during cleanup: {cleanup_error}"
+            write_to_error_log(error_message)
+            print(error_message)
 
 def combine_mp3s_with_av(mp3_directory, output_filename, metadata, cover_image=None):
     """
@@ -152,13 +153,14 @@ def combine_mp3s_with_av(mp3_directory, output_filename, metadata, cover_image=N
                 )
                 combined_audio += audio_segment
 
-        except Exception as e:
-            write_to_error_log(f"Error processing {filename} with av: {e}")
-            print(f"Error processing {filename} with av: {e}")
-            return
+            # Export the final combined audio as an M4B file
+            combined_audio.export(output_filename, format="mp4", codec="aac")
 
-    # Export the final combined audio as an M4B file
-    combined_audio.export(output_filename, format="mp4", codec="aac")
+        except Exception as e:
+            error_message = f"Error processing {filename} with av: {e}\n\If you're seeing this error try running step 4 with the -m ffmpeg flag."
+            write_to_error_log(error_message)
+            print(error_message)
+            return
 
     # Set metadata on the M4B file
     set_metadata(output_filename, metadata, cover_image)

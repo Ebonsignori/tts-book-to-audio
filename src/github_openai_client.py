@@ -4,7 +4,7 @@ from errors import write_to_error_log
 from openai import OpenAI
 import json
 from config import CONFIG
-from utils import clean_code_blocks
+from utils import clean_json_code_blocks
 
 
 class GitHubOpenAIClient:
@@ -31,8 +31,9 @@ class GitHubOpenAIClient:
             completion = response.choices[0].message.content
             return completion.strip()
         except Exception as e:
-            print(f"Error processing block: {e}")
-            write_to_error_log(f"Error processing text block: {e}")
+            error_message = f"Error processing block: {e}"
+            print(error_message)
+            write_to_error_log(error_message)
             return ""
         
     def process_characters_json(self, characters_json: str) -> str:
@@ -49,18 +50,20 @@ class GitHubOpenAIClient:
                 top_p=1
             )
             # Extract the content
-            processed_json_str = clean_code_blocks(response.choices[0].message.content.strip())
+            processed_json_str = clean_json_code_blocks(response.choices[0].message.content.strip())
 
             # Parse the JSON
             try:
                 processed_json = json.loads(processed_json_str)
                 return processed_json
             except:
-                print(f"Error parsing returned character.json. Using unprocessed characters.json.\nReturned: {processed_json} \nError: {e}")
-                write_to_error_log(f"Error parsing returned character.json. Using unprocessed characters.json.\nReturned: {processed_json} \nError: {e}")
+                error_message = f"Error parsing returned character.json. Using unprocessed characters.json.\nReturned: {processed_json_str} \nError: {e}"
+                print(error_message)
+                write_to_error_log(error_message)
                 return characters_json
         except Exception as e:
-            print(f"Error processing character's JSON: {e}")
-            write_to_error_log(f"Error processing character's JSON: {e}")
+            error_message = f"Error processing character's JSON: {e}"
+            print(error_message)
+            write_to_error_log(error_message)
             return ""
 

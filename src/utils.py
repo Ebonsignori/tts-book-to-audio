@@ -25,15 +25,14 @@ def extract_character_tags(text: str) -> list:
     return [{"name": name, "gender": gender} for name, gender in matches]
 
 
-def clean_code_blocks(text: str) -> str:
+def clean_markdown_code_blocks(text: str) -> str:
     """Removes wrapping Markdown code block delimiters like ``` or ```markdown."""
-    # This regex:
-    # ^\s*```[^`\s]*\s*\n?   => Matches the opening ``` with optional language specifier and optional whitespace/newline
-    # (.*?)                  => Non-greedy capture of the code block content
-    # \s*```$                => Matches the closing ``` with optional whitespace before the end
+    # ^\s*```(?:markdown)?\s*\n? => Matches the opening ``` with optional 'markdown' specifier and optional whitespace/newline
+    # (.*?) => Non-greedy capture of the code block content
+    # \s*```$ => Matches the closing ``` with optional whitespace before the end
     code_block_regex = re.compile(
-        r'^\s*```[^`\s]*\s*\n?(.*?)\s*```$',
-        re.DOTALL
+        r'^\s*```(?:markdown)?\s*\n?(.*?)\s*```$',
+        re.DOTALL | re.IGNORECASE  # Added re.IGNORECASE to handle 'Markdown', 'MARKDOWN', etc.
     )
     
     match = code_block_regex.match(text)
@@ -41,6 +40,20 @@ def clean_code_blocks(text: str) -> str:
         return match.group(1).strip()
     return text
 
+def clean_json_code_blocks(text: str) -> str:
+    """Removes wrapping JSON code block delimiters like ``` or ```json."""
+    # ^\s*```(?:json)?\s*\n? => Matches the opening ``` with optional 'json' specifier and optional whitespace/newline
+    # (.*?) => Non-greedy capture of the code block content
+    # \s*```$ => Matches the closing ``` with optional whitespace before the end
+    json_code_block_regex = re.compile(
+        r'^\s*```(?:json)?\s*\n?(.*?)\s*```$',
+        re.DOTALL | re.IGNORECASE  # Added re.IGNORECASE to handle 'Json', 'JSON', etc.
+    )
+    
+    match = json_code_block_regex.match(text)
+    if match:
+        return match.group(1).strip()
+    return text
 
 def split_text_into_chunks(text: str, max_length: int) -> list:
     """Splits a long text into smaller chunks without breaking words."""

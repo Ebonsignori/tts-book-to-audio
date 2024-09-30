@@ -6,7 +6,7 @@ from utils import (
     count_tokens,
     split_into_sentences,
     extract_character_tags,
-    clean_code_blocks,
+    clean_markdown_code_blocks,
     split_text_into_chunks,
     remove_suffix
 )
@@ -235,13 +235,14 @@ def detect_cover_image(input_file_name):
     else:
         return None
 
-def write_output_file(text: str, output_file_path: str):
+def write_output_file(text: str, output_file_path: str, quiet=False):
     """Writes the processed text to the output file."""
     # If directories of the output file do not exist, create them
     output_file_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_file_path, "w", encoding="utf-8") as f:
         f.write(text.strip())
-    print(f"Processing complete. Output written to {output_file_path}")
+    if not quiet:
+        print(f"Processing complete. Output written to {output_file_path}")
 
 
 def main():
@@ -260,6 +261,11 @@ def main():
         "-s",
         "--steps",
         help='Steps of script to run (comma-separated) If not passed will run every step.',
+    )
+    parser.add_argument(
+        "-p",
+        "--write-processed-blocks",
+        help='Write intermediate text processing blocks returned from the GPT. Useful for debugging',
     )
     parser.add_argument(
         "-m",
@@ -331,8 +337,11 @@ def main():
           print(f"Processing block {index}/{len(blocks)}...")
           processed_block = openai_client.process_block(block)
 
+          if args.write_processed_blocks:
+            write_output_file(processed_block, CONFIG["outputs_path"] / book_name / "processed_blocks" / f"processed_{index}.txt", True)
+
           # Clean the processed block by removing any code block wrappers
-          processed_block = clean_code_blocks(processed_block)
+          processed_block = clean_markdown_code_blocks(processed_block)
 
           final_output += processed_block + "\n\n"
 
@@ -382,7 +391,7 @@ def main():
         combine_mp3s_with_av(audio_files_output_dir, m4b_output_file, metadata, cover_image)
     
     if error_log_has_new_errors():
-        print("There were errors during the run. Please check error.log for more details.")
+        print("\nThere were errors during the run. Please check error.log for more details.")
 
 
 if __name__ == "__main__":
