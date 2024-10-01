@@ -1,10 +1,10 @@
-Dumbledore was now looking down at Harry, who looked right back at him, trying to discern the expression of the eyes behind the half-moon spectacles.
+Professor Dumbledore was now looking down at Harry, who looked right back at him, trying to discern the expression of the eyes behind the half-moon spectacles.
 <dumbledore-m>“Did you put your name into the Goblet of Fire, Harry?”</dumbledore-m> he asked calmly.
 <harry-m>“No,”</harry-m> said Harry. 
 <dumbledore-m>“Did you ask an older student to put it into the Goblet of Fire for you?”</dumbledore-m> 
 <harry-m>“No,”</harry-m> said Harry vehemently.
 <madame_maxime-f>“Ah, but of course ’e is lying!”</madame_maxime-f> cried Madame Maxime. 
-<mcgonagall-f>“He could not have crossed the Age Line,”</mcgonagall-f> said Professor McGonagall sharply. <mcgonagall-f>“I am sure we are all agreed on that —”</mcgonagall-f>
+<professor_mcgonagall-f>“He could not have crossed the Age Line,”</professor_mcgonagall-f> said Professor McGonagall sharply. <professor_mcgonagall-f>“I am sure we are all agreed on that —”</professor_mcgonagall-f>
 <madame_maxime-f>“Dumbly-dorr must ’ave made a mistake wiz ze line,”</madame_maxime-f> said Madame Maxime, shrugging.
 <dumbledore-m>“It is possible, of course,”</dumbledore-m> said Dumbledore politely
-<mcgonagall-f>“Dumbledore, you know perfectly well you did not make a mistake!”</mcgonagall-f> said Professor McGonagall angrily. <mcgonagall-f>“Really, what nonsense!"</mcgonagall-f>
+<professor_mcgonagall-f>“Dumbledore, you know perfectly well you did not make a mistake!”</professor_mcgonagall-f> said Professor McGonagall angrily. <professor_mcgonagall-f>“Really, what nonsense!"</professor_mcgonagall-f>

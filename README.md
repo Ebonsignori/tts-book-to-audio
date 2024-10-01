@@ -43,7 +43,9 @@ For an illustrative example of the process see:
 
 - **GitHub PAT and access to GitHub Models for 4o** (you need to manually edit the code to directly use OpenAI for text block processing)
 
-- OpenAI API Key (optional / if using OpenAI TTS option)
+- OpenAI API Key (optional / if using `openai` TTS option)
+
+- ElevenLabs API Key (optional / if using `elevenlabs` TTS option)
 
 ## Installation
 
@@ -77,7 +79,9 @@ See [.env.example](./.env.example) and rename it to `.env` with the respective k
 
 This project uses a [GitHub PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with any level of permissions set via `GITHUB_TOKEN` to access OpenAI's 4o model via [GitHub Models](https://docs.github.com/en/github-models).
 
-The `OPENAI_API_KEY` is only needed if you are using the `--tts-method remote` option. This is NOT a free API, however the resulting audio quality may be higher if you choose to use this method.
+- The `OPENAI_API_KEY` is only needed if you are using the `--tts-method openai` option. This is NOT a free API, however the resulting audio quality may be higher if you choose to use this method.
+
+- The `ELEVENLABS_API_KEY` is only needed if you are using the `--tts-method elevenlabs` option. This is NOT a free API, however the resulting audio quality may be higher if you choose to use this method.
 
 ### Invoking the Script
 
@@ -102,8 +106,9 @@ pipenv run python src/main.py -i my_book.epub
     - `.pdf`
 
 - `--tts-method`, `-t`: (Optional) Text-to-Speech method to use. Choices are:
-  - `local`: Free and fast, but not as high quality as the OpenAPI TTS API.
-  - `remote`: Requires an OPENAI_API_KEY in `.env`. Costs money to use the OpenAPI TTS API.
+  - `local`: (default) Free and fast, but not as high quality as paid APIs.
+  - `openai`: Requires an `OPENAI_API_KEY` in `.env`. Costs money to use the OpenAPI TTS API.
+  - `elevenlabs`: Requires an `ELEVENLABS_API_KEY` in `.env`. Costs money to use the ElevenLabs TTS API.
 
 - `--steps`, `-s`: (Optional) Comma-separated list of processing steps to execute. If not provided, all steps will run. See [Processing Steps](#processing-steps)
 

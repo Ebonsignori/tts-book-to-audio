@@ -253,9 +253,9 @@ def main():
     parser.add_argument(
         "-t",
         "--tts-method",
-        choices=["local", "remote"],
+        choices=["local", "openai", "elevenlabs"],
         default="local",
-        help='Text-to-Speech method ("local" or "remote")',
+        help='Text-to-Speech method. Every method other than local requires an API in .env and is not free to use.',
     )
     parser.add_argument(
         "-s",
@@ -289,8 +289,8 @@ def main():
 
     # Validate TTS method
     tts_method = args.tts_method.lower()
-    if tts_method not in ["local", "remote"]:
-        print(f'Invalid TTS method "{args.tts_method}". Allowed values are "local" or "remote".')
+    if tts_method not in ["local", "openai", "elevenlabs"]:
+        print(f'Invalid TTS method "{args.tts_method}". Allowed values are "local", "openai", or "elevenlabs".')
         sys.exit(1)
 
     # Validate input file directory

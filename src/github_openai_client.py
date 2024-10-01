@@ -1,5 +1,6 @@
 # openai_client.py
 
+import os
 from errors import write_to_error_log
 from openai import OpenAI
 import json
@@ -14,6 +15,13 @@ class GitHubOpenAIClient:
             api_key=CONFIG["api_key"],
         )
 
+        client = OpenAI(
+            base_url="https://models.inference.ai.azure.com",
+            api_key=os.getenv("GITHUB_TOKEN")
+        )
+
+        client
+
     def process_block(self, block: str) -> str:
         user_message = f"{CONFIG['user_message_prefix']}{block}{CONFIG['user_message_suffix']}"
         prompt = f"{CONFIG['system_message']}\n\n{user_message}"
@@ -25,8 +33,8 @@ class GitHubOpenAIClient:
                     {"role": "user", "content": prompt}
                 ],
                 max_tokens=CONFIG["token_limits"]["MAX_COMPLETION_TOKENS"],
-                temperature=1,
-                top_p=1
+                temperature=.2,
+                top_p=.5
             )
             completion = response.choices[0].message.content
             return completion.strip()
@@ -46,8 +54,8 @@ class GitHubOpenAIClient:
                     {"role": "user", "content": prompt}
                 ],
                 max_tokens=CONFIG["token_limits"]["MAX_COMPLETION_TOKENS"],
-                temperature=1,
-                top_p=1
+                temperature=.2,
+                top_p=.8
             )
             # Extract the content
             processed_json_str = clean_json_code_blocks(response.choices[0].message.content.strip())

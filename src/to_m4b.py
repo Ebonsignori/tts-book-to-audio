@@ -81,7 +81,7 @@ def combine_mp3s_with_ffmpeg(mp3_directory, output_filename, metadata, cover_ima
         print(f"Combined audiobook saved to: {output_filename}")
 
     except subprocess.CalledProcessError as e:
-        error_message = f"FFmpeg error: {e.stderr}\n\If you're seeing this error try running step 4 with the -m av flag."
+        error_message = f"FFmpeg error: {e.stderr}\nIf you're seeing this error try running step 4 with the -m av flag."
         write_to_error_log(error_message)
         print(error_message)
     except Exception as e:
