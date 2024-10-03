@@ -3,11 +3,9 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [Features](#features)
-- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Setting the `.env`](#settings-the-env)
+  - [Setting up secrets](#setting-up-secrets)
   - [Invoking the Script](#invoking-the-script)
   - [Input Options](#input-options)
 - [Processing Steps](#processing-steps)
@@ -25,55 +23,23 @@ For an illustrative example of the process see:
 
 [inputs/example.txt](./inputs/example.txt) -> [outputs/example/example_tagged.txt](./outputs/example/example_tagged.txt) -> [outputs/example/example.m4b](./outputs/example/example.m4b)
 
-## Features
-
-- **Multi-format Support**: Accepts .txt, .epub, .mobi, and .pdf files as input.
-- **Character Tagging**: Automatically identifies and tags dialogues with character names.
-- **Voice Customization**: Assigns different voices to different characters based on predefined configurations.
-- **Metadata Management**: Generates customizable metadata for the resulting audiobook.
-- **Cover Image Integration**: Incorporates a cover image if available alongside the input book.
-- **Flexible Audio Compilation**: Combines audio files into .m4b format using av or ffmpeg methods.
-- **Step-wise Processing**: Allows users to run specific processing steps for greater control and manual intervention.
-
-## Prerequisites
-
-- **Python Version**: Python 3.9
-
-- **Package Manager**: Pipenv
-
-- **GitHub PAT and access to GitHub Models for 4o** (you need to manually edit the code to directly use OpenAI for text block processing)
-
-- OpenAI API Key (optional / if using `openai` TTS option)
-
-- ElevenLabs API Key (optional / if using `elevenlabs` TTS option)
 
 ## Installation
 
-Clone the Repository:
+If you don't have `pipenv` or `Python 3.9` installed, please install it.
 
-`bash
+Then,
+
+```bash
 git clone https://github.com/ebonsignori/tts-book-to-audio.git
 cd tts-book-to-audio
-`
-
-Install Dependencies:
-
-Ensure you have Pipenv installed. If not, install it using:
-
-`bash
-pip install pipenv
-`
-
-Then, install the required packages:
-
-`bash
 pipenv install
-`
+```
 
 ## Usage
 
 
-### Setting the `.env`
+### Setting up secrets
 
 See [.env.example](./.env.example) and rename it to `.env` with the respective keys.
 
@@ -118,33 +84,35 @@ pipenv run python src/main.py -i my_book.epub
     - `av`
     - `ffmpeg`
 
+- `-p`, `--write-processed-blocks` (Optional): Write intermediate text processing blocks to `output/<input_book_name>/processed_blocks/processed_#.txt` returned from the GPT. Useful for debugging.
+
 **Note**: Ensure the input file is placed inside the `inputs/` directory.
 
 ## Processing Steps
 
 The conversion process is divided into four main steps. You can execute all steps at once or specify individual steps for manual intervention or customization.
 
-**Step 1**: Process Input File into Plaintext
-- **Description**: Converts the input book file into a plaintext file.
-- **Output**: `outputs/<input_book_name>/<input_book_name>_plaintext.txt`
+**Step 1**: Process Input File into Plaintext.
+  - Converts the input book file into a plaintext file.
+  - **Output**: `outputs/<input_book_name>/<input_book_name>_plaintext.txt`
 
 **Step 2**: Tag Dialogues and Generate JSON Files
-- **Description**:
- - Transforms plaintext by surrounding dialogues with `<character_name>` tags.
- - Generates `characters.json` with character names and their corresponding voices.
- - Creates `metadata.json` for audiobook metadata customization.
-- **Outputs**:
- - `outputs/<input_book_name>/<input_book_name>_tagged.txt`
- - `outputs/<input_book_name>/characters.json`
- - `outputs/<input_book_name>/metadata.json`
+   - Transforms plaintext by surrounding dialogues with `<character_name>` tags.
+   - Generates `characters.json` with character names and their corresponding voices.
+   - Creates `metadata.json` for audiobook metadata customization.
+  - **Outputs**:
+   - `outputs/<input_book_name>/<input_book_name>_tagged.txt`
+   - `outputs/<input_book_name>/characters.json`
+   - `outputs/<input_book_name>/metadata.json`
+   - `output/<input_book_name>/processed_blocks/processed_#.txt` (if `-p` flag is passed)
 
 **Step 3**: Generate TTS Audio Files
-- **Description**: Converts the tagged text into audio files using the specified TTS method.
-- **Output**: `outputs/<input_book_name>/audio_files/<file_number>.mp3`
+  - Converts the tagged text into audio files using the specified TTS method.
+  - **Output**: `outputs/<input_book_name>/audio_files/<file_number>.mp3`
 
 **Step 4**: Combine Audio Files into an .m4b Audiobook
-- **Description**: Merges all generated audio files into a single .m4b file using the chosen method (av or ffmpeg).
-- **Output**: `outputs/<input_book_name>/<input_book_name>.m4b`
+  - Merges all generated audio files into a single .m4b file using the chosen method (av or ffmpeg).
+  - **Output**: `outputs/<input_book_name>/<input_book_name>.m4b`
 
 ### Running Specific Steps
 
